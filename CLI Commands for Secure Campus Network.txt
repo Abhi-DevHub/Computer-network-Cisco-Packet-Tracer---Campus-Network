@@ -1,0 +1,193 @@
+### Cisco CLI Commands for Secure Campus Network
+
+#### Switch Configuration (B-MSW2)
+enable  
+configure terminal  
+
+hostname B-MSW2  
+
+line console 0  
+password cisco  
+login  
+exec-timeout 3 0  
+enable password cisco  
+
+banner motd # unauthorised access! #  
+
+username cisco password cisco  
+ip domain-name cisco.com  
+
+crypto key generate rsa general-keys modulus 1024  
+ip ssh version 2  
+
+access-list 2 permit 192.168.10.0 255.255.255.0  
+access-list 2 deny any  
+
+line vty 0 15  
+login local  
+transport input ssh  
+access-class 2 in  
+exit  
+
+do write memory  
+
+#### VLAN Configuration
+configure terminal  
+vlan 10  
+ name Management  
+vlan 20  
+ name LAN  
+vlan 50  
+ name WLAN  
+
+interface range fa0/1-2  
+ switchport mode trunk  
+exit  
+
+interface range fa0/3-20  
+ switchport mode access  
+ switchport access vlan 20  
+exit  
+
+interface range fa0/21-24  
+ switchport mode access  
+ switchport access vlan 50  
+exit  
+
+interface range gig0/1-2  
+ switchport mode access  
+ switchport access vlan 10  
+exit  
+
+do write memory  
+
+#### Branch Switch VLAN Configuration
+configure terminal  
+vlan 60  
+ name BLAN  
+vlan 90  
+ name BWLAN  
+vlan 199  
+ name BLACKHOLE  
+
+interface range fa0/1-2  
+ switchport mode trunk  
+exit  
+
+interface range fa0/3-20  
+ switchport mode access  
+ switchport access vlan 60  
+exit  
+
+interface range fa0/21-24  
+ switchport mode access  
+ switchport access vlan 90  
+exit  
+
+interface range gig0/1-2  
+ switchport mode access  
+ switchport access vlan 199  
+shutdown  
+exit  
+
+do write memory  
+
+#### Spanning Tree & EtherChannel Configuration
+configure terminal  
+spanning-tree portfast default  
+spanning-tree bpduguard enable  
+
+interface range gig1/0/21-23  
+ channel-group 2 mode active  
+interface Port-channel 2  
+ switchport mode trunk  
+exit  
+
+do write memory  
+
+#### Firewall Configuration (Cisco ASA)
+enable  
+configure terminal  
+
+interface gig1/1  
+ no shutdown  
+ nameif INSIDE1  
+ security-level 100  
+ ip address 10.20.20.34 255.255.255.252  
+exit  
+
+interface gig1/2  
+ no shutdown  
+ nameif INSIDE2  
+ security-level 100  
+ ip address 10.20.20.38 255.255.255.252  
+exit  
+
+interface gig1/3  
+ no shutdown  
+ nameif OUTSIDE  
+ security-level 0  
+ ip address 105.100.50.2 255.255.255.252  
+exit  
+
+interface gig1/4  
+ no shutdown  
+ nameif DMZ  
+ security-level 70  
+ ip address 10.20.20.1 255.255.255.224  
+exit  
+
+do write memory  
+
+#### OSPF Routing Configuration
+configure terminal  
+router ospf 15  
+ router-id 5.1.5.1  
+ network 10.20.20.44 0.0.0.3 area 0  
+ network 172.17.0.0 0.0.255.255 area 0  
+ network 10.11.0.0 0.0.255.255 area 0  
+exit  
+
+do write memory  
+
+#### Firewall NAT & Security Policies
+configure terminal  
+access-list RES-ACCESS extended permit icmp any any  
+access-list RES-ACCESS extended permit udp any any eq 67  
+access-list RES-ACCESS extended permit udp any any eq 68  
+access-list RES-ACCESS extended permit udp any any eq 53  
+access-list RES-ACCESS extended permit tcp any any eq 53  
+access-list RES-ACCESS extended permit tcp any any eq 80  
+access-list RES-ACCESS extended permit tcp any any eq 25  
+access-list RES-ACCESS extended permit tcp any any eq 21  
+access-list RES-ACCESS extended permit tcp any any eq 20  
+access-group RES-ACCESS in interface OUTSIDE  
+
+do write memory  
+
+#### Wireless Controller (WLC) Configuration
+configure terminal  
+ap-group name Campus-Wifi  
+ wlan 1 SSID_Staff  
+ wlan 2 SSID_Guest  
+ wlan 3 SSID_Corporate  
+exit  
+
+interface vlan 50  
+ ip address 10.10.0.254 255.255.0.0  
+ no shutdown  
+exit  
+
+do write memory  
+
+#### Testing & Verification Commands
+show ip interface brief  
+show vlan brief  
+show spanning-tree  
+show etherchannel summary  
+show standby brief  
+show ip ospf neighbor  
+show access-list  
+show run | include dhcp  
+show firewall policy-map  
+show wireless wlan summary  
