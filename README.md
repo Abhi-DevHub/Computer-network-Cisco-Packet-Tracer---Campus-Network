@@ -1,6 +1,4 @@
-________________________________________
-# 🌐 Advanced Enterprise Networking Project #12  
-## **Design & Implementation of a Secure Campus Network**  
+  # 🌐 **Design & Implementation of a Secure Campus Network**  
 
 ### 📌 Project Overview  
 University operates across **two campuses, 100 miles apart**, with **30,000+ users** expected to double by **2025**. This project aims to implement a **secure, scalable, and high-performance network** using **Cisco Packet Tracer** to support **academic and administrative operations**.  
