@@ -136,6 +136,5 @@ ________________________________________
 ✅ **Clear Instructions for Users** – Clone, Open, Configure, and Test.  
 ✅ **Future Enhancements** – For **scalability & improvements**.  
 
-This is a **full and detailed README** for your project on GitHub.  
-Would you like **sample Cisco CLI configurations** to go with it? 🚀
+
 
