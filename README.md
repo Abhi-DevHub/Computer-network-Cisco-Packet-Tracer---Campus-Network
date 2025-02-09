@@ -115,6 +115,7 @@ show vlan brief
 show spanning-tree  
 ping 192.168.1.1  
 traceroute 8.8.8.8  
+```
 ________________________________________
 📜 License
 This project is open-source……
@@ -127,7 +128,7 @@ ________________________________________
 🔥 Let’s Build a Secure & Scalable Network! 🚀
 
 ---
-```
+
 
 ### **What This README Includes:**  
 ✅ **Professional Formatting (Markdown)** – Works perfectly on **GitHub**.  
