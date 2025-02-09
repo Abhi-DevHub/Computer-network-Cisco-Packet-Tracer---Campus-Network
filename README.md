@@ -6,6 +6,8 @@ University operates across **two campuses, 100 miles apart**, with **30,000+ use
 ---
 
 ## 🏛 **Network Architecture**  
+![Network Diagram](network_diagram.png)
+
 
 ### 🔥 **Core Network Components**  
 ✅ **Firewalls** – Cisco ASA 5500-X at both campuses (DMZ at Main Campus).  
